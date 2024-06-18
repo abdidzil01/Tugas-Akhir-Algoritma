@@ -1,0 +1,79 @@
+# Inisialisasi data nasabah
+nasabah = {
+    '123456': {  # PIN: 123456
+        'nama': 'John Doe',
+        'saldo': 1000000
+    },
+    '654321': {  # PIN: 654321
+        'nama': 'Jane Doe',
+        'saldo': 500000
+    }
+}
+
+# Fungsi untuk verifikasi PIN
+def verifikasi_pin():
+    pin = input("Masukkan PIN Anda: ")
+    if pin in nasabah:
+        return pin
+    else:
+        print("PIN salah. Silakan coba lagi.")
+        return None
+
+# Fungsi untuk menampilkan menu ATM
+def menu_atm():
+    print("=== Selamat Datang di ATM ===")
+    pin = None
+    while pin is None:
+        pin = verifikasi_pin()
+    
+    while True:
+        print("\nMenu:")
+        print("1. Cek Saldo")
+        print("2. Tarik Tunai")
+        print("3. Transfer")
+        print("4. Keluar")
+
+        pilihan = input("Silakan pilih menu (1/2/3/4): ")
+
+        if pilihan == '1':
+            cek_saldo(pin)
+        elif pilihan == '2':
+            tarik_tunai(pin)
+        elif pilihan == '3':
+            transfer(pin)
+        elif pilihan == '4':
+            print("Terima kasih telah menggunakan ATM.")
+            break
+        else:
+            print("Pilihan tidak valid. Silakan coba lagi.")
+
+# Fungsi untuk cek saldo
+def cek_saldo(pin):
+    print(f"Saldo Anda saat ini adalah: Rp {nasabah[pin]['saldo']}")
+
+# Fungsi untuk tarik tunai
+def tarik_tunai(pin):
+    saldo = nasabah[pin]['saldo']
+    nominal = int(input("Masukkan nominal yang ingin ditarik: "))
+    if nominal > saldo:
+        print("Saldo Anda tidak mencukupi.")
+    else:
+        nasabah[pin]['saldo'] -= nominal
+        print(f"Anda telah melakukan penarikan sebesar Rp {nominal}.")
+        print(f"Saldo Anda sekarang adalah: Rp {nasabah[pin]['saldo']}")
+
+# Fungsi untuk transfer
+def transfer(pin):
+    saldo = nasabah[pin]['saldo']
+    rek_tujuan = input("Masukkan nomor rekening tujuan: ")
+    nominal = int(input("Masukkan nominal yang ingin ditransfer: "))
+    if nominal > saldo:
+        print("Saldo Anda tidak mencukupi.")
+    else:
+        # Asumsi sederhana, langsung mengurangi saldo pengirim
+        nasabah[pin]['saldo'] -= nominal
+        print(f"Anda telah melakukan transfer sebesar Rp {nominal} ke rekening {rek_tujuan}.")
+        print(f"Saldo Anda sekarang adalah: Rp {nasabah[pin]['saldo']}")
+
+# Memulai program
+menu_atm()
